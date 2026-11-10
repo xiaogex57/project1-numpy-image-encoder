@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.venv/
+.DS_Store
+output_tokens.npz
+my_tokens.npz
+weights/image_encoder.npz
+assets/reference_outputs.npz
+report/*.aux
+report/*.log
+report/*.out
+report/*.pdf
+report/*.synctex.gz
