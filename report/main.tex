@@ -1,6 +1,6 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage{fontspec,xeCJK,geometry,graphicx,booktabs,hyperref}
-\setCJKmainfont{Noto Serif CJK SC}
+\IfFontExistsTF{Noto Serif CJK SC}{\setCJKmainfont{Noto Serif CJK SC}}{\setCJKmainfont{Songti SC}}
 \geometry{left=1in,right=1in,top=1in,bottom=1in}
 \hypersetup{hidelinks}
 \begin{document}
@@ -64,12 +64,12 @@
 \bottomrule
 \end{tabular}
 \end{center}
-最终输出容差为 $\mathrm{atol}=2\times10^{-5},\mathrm{rtol}=2\times10^{-4}$；内部 token 容差为 $\mathrm{atol}=2\times10^{-4},\mathrm{rtol}=2\times10^{-4}$。所有结果均为有限的 float32 数值。项目 GitHub 地址：\underline{\hspace{8cm}}。
+最终输出容差为 $\mathrm{atol}=2\times10^{-5},\mathrm{rtol}=2\times10^{-4}$；内部 token 容差为 $\mathrm{atol}=2\times10^{-4},\mathrm{rtol}=2\times10^{-4}$。所有结果均为有限的 float32 数值。项目 GitHub 地址：\url{https://github.com/xiaogex57/project1-numpy-image-encoder}。
 
 \section{Discussion：分析与反思}
 图像块和输入 token 的误差为零，说明轴重排、patch 投影和位置顺序与参考一致。经过 12 个块后内部 token 最大误差为 $4.387\times10^{-5}$，仍在容差内；最终输出最大误差为 $6.780\times10^{-7}$。改变批次顺序并重复图像仍通过，支持按输入行独立处理的结论。
 
-实现中需注意两种权重方向：大多数线性层权重是 $[\mathrm{out},\mathrm{in}]$，计算时转置；最终 \texttt{visual.proj} 已是 $[768,512]$，不转置。多头键矩阵也只交换最后两个轴。实验仅验证固定权重的前向数值一致性，不评价分类准确率或训练效果。提交者应在此补充自己实际遇到的错误及修复过程。
+原始项目首次运行检查时，\texttt{patches} 阶段因 TODO-01 抛出 \texttt{NotImplementedError}；补全图像块排列后该阶段误差降为零。实现中还需注意两种权重方向：大多数线性层权重是 $[\mathrm{out},\mathrm{in}]$，计算时转置；最终 \texttt{visual.proj} 已是 $[768,512]$，不转置。多头键矩阵也只交换最后两个轴。实验仅验证固定权重的前向数值一致性，不评价分类准确率或训练效果。
 
 \newpage
 \noindent\textbf{指导教师批阅意见：}

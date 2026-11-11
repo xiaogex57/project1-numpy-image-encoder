@@ -1,0 +1,9 @@
+assets       PASS: 152 matching visual tensors and ten image/reference pairs
+preprocess   PASS shape=(10, 3, 224, 224) max_abs=0.000e+00 mean_abs=0.000e+00 (atol=2e-06, rtol=0.0002)
+patches      PASS shape=(2, 49, 3072) max_abs=0.000e+00 mean_abs=0.000e+00 (atol=0.0002, rtol=0.0002)
+tokens       PASS shape=(2, 50, 768) max_abs=0.000e+00 mean_abs=0.000e+00 (atol=0.0002, rtol=0.0002)
+block0       PASS shape=(2, 50, 768) max_abs=7.540e-06 mean_abs=2.274e-07 (atol=0.0002, rtol=0.0002)
+last_tokens  PASS shape=(2, 50, 768) max_abs=4.387e-05 mean_abs=2.406e-06 (atol=0.0002, rtol=0.0002)
+output       PASS shape=(10, 512) max_abs=6.780e-07 mean_abs=8.215e-08 (atol=2e-05, rtol=0.0002)
+batch        PASS shape=(3, 512) max_abs=4.619e-07 mean_abs=8.133e-08 (atol=2e-05, rtol=0.0002)
+Requested numerical checks passed. The reference file is never an encoder input.
