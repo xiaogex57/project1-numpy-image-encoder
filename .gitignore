@@ -4,8 +4,7 @@ __pycache__/
 .DS_Store
 output_tokens.npz
 my_tokens.npz
-weights/image_encoder.npz
-assets/reference_outputs.npz
+project1-numpy-student-submission.zip
 report/*.aux
 report/*.log
 report/*.out

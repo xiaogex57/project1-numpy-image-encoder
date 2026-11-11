@@ -1,40 +1,54 @@
 # NumPy 图像特征提取
 
-GitHub 仓库：https://github.com/xiaogex57/project1-numpy-image-encoder （公开可访问）。
+GitHub 仓库：https://github.com/xiaogex57/project1-numpy-image-encoder
 
-本项目用 NumPy 完成 OpenCLIP ViT-B/32 图像塔的前向计算。固定参数由课程提供；程序不训练模型。输入是预处理后的 float32 数组 `[B,3,224,224]`，输出是每张图像一行、单位长度的 float32 特征 `[B,512]`。
+项目使用 NumPy 完成 OpenCLIP ViT-B/32 图像塔的前向计算，使用课程提供的固定权重，不训练模型。输入为预处理后的 float32 数组 `[B,3,224,224]`，输出为每张图像一个单位长度的 float32 特征 `[B,512]`。
 
-## 代码结构
+## 项目结构
 
 | 路径 | 用途 |
 | --- | --- |
-| `image_encoder.py` | 六组练习实现：图像块、嵌入、多头注意力、Transformer、最终投影 |
-| `preprocess_image.py`, `helpers.py` | 课程提供的预处理及数值辅助函数 |
-| `runtime.py`, `run.py` | 加载参数和图像，运行命令行编码 |
-| `check.py` | 与独立 FP32 参考比较各阶段结果 |
-| `config.json`, `weights/manifest.json` | 架构配置和权重校验信息 |
-| `assets/images/`, `assets/images.json` | 十张示例图像及来源信息 |
-| `report/main.tex` | 按课程模板撰写的实验报告源文件 |
+| `image_encoder.py` | 六组练习实现：图像块、嵌入、多头注意力、Transformer 和最终投影 |
+| `preprocess_image.py`, `helpers.py` | 图像预处理和数值辅助函数 |
+| `runtime.py`, `run.py` | 加载模型参数、处理图像并保存特征 |
+| `check.py` | 检查模型资源并逐阶段比较参考结果 |
+| `config.json` | 模型架构参数 |
+| `weights/image_encoder.npz` | 模型权重，Git LFS 管理 |
+| `weights/manifest.json` | 权重张量形状、数量和 SHA-256 清单 |
+| `assets/reference_outputs.npz` | 数值检查参考结果，Git LFS 管理 |
+| `assets/images/`, `assets/images.json` | 十张示例图像、来源和 SHA-256 清单 |
+| `report/main.tex`, `report/main.pdf` | 实验报告源文件和 PDF |
+| `report/check-results.txt` | 分阶段数值检查记录 |
+| `lecture-demos/` | NumPy、图像读写和 token 流程示例 |
+| `practice/project1_exercises.pdf` | 课程练习说明 |
+| `PPT-CODE-MAP.txt` | 课程讲义与代码对应关系 |
+| `requirements.txt` | Python 依赖清单 |
 
 ## 环境与运行
 
-需要 Python 3.9 或更新版本、NumPy、Pillow 和 imageio；具体范围见 `requirements.txt`。
+需要 Python 3.9 或更新版本、NumPy、Pillow 和 imageio；版本范围见 `requirements.txt`。模型权重和参考结果通过 Git LFS 下载。系统需安装 Git LFS，并在克隆前初始化：
 
 ```bash
+git lfs install
+git clone https://github.com/xiaogex57/project1-numpy-image-encoder.git
+cd project1-numpy-image-encoder
 python3 -m pip install -r requirements.txt
+```
+
+已有仓库若尚未取得大文件，可运行 `git lfs pull`。安装依赖后运行：
+
+```bash
 python3 check.py --stage all
 python3 run.py --output output_tokens.npz
 python3 run.py --images path/to/a.jpg path/to/b.png --output my_tokens.npz
 ```
 
-`run.py` 在 NPZ 文件中保存 `ids` 和 `output_tokens`，顺序与输入一致。运行命令应从本目录执行；提供完整脚本路径时也可从其他目录执行。
+`run.py` 在 NPZ 文件中保存 `ids` 和 `output_tokens`，顺序与输入一致。
 
 ## 数据与复现
 
-课程附件中有 `weights/image_encoder.npz`（约 311 MB，152 个图像权重张量）及 `assets/reference_outputs.npz`（约 7.3 MB），因体积大且是课程提供的资料，不纳入提交仓库。请从畅课平台下载本项目原始附件，按同名路径放回目录；`check.py` 会校验其 SHA-256、张量形状和样例图像指纹。没有参考文件时可以运行编码器，但不能运行完整数值检查。不要把参考结果当作编码器输入。
+`weights/image_encoder.npz`（约 311 MB，152 个图像权重张量）和 `assets/reference_outputs.npz`（约 7.3 MB）均已纳入公开仓库的 Git LFS。`check.py` 会校验文件 SHA-256、权重张量形状及样例图像指纹。参考结果仅用于数值检查，不作为编码器输入；权重和十张示例图像用于实际编码。
 
-检查包含预处理、图像块、输入 token、首个 Transformer 块、最后 token、最终输出及改变顺序和重复图像的批次。2026-11-10 在 Python 3.14.3、NumPy 2.4.4、Pillow 12.2.0 上运行 `python3 check.py --stage all`，全部 PASS；最终输出形状 `(10,512)`，最大绝对误差 `6.780e-07`，平均绝对误差 `8.215e-08`。最终输出比较容差为 `atol=2e-5, rtol=2e-4`。详细分阶段数据见报告。
+检查包含预处理、图像块、输入 token、首个 Transformer 块、最后 token、最终输出，以及改变顺序和重复图像的批次。2026-11-11 在 Python 3.14.3、NumPy 2.4.4、Pillow 12.2.0 上运行 `python3 check.py --stage all`，全部 PASS；最终输出形状 `(10,512)`，最大绝对误差 `6.780e-07`，平均绝对误差 `8.215e-08`。最终输出比较容差为 `atol=2e-5, rtol=2e-4`。分阶段数据见 `report/check-results.txt` 和实验报告。
 
-## 实现与说明
-
-实现覆盖图像块、嵌入、多头注意力、Transformer 和 CLS 输出等六组练习，并附有分阶段数值验证和复现说明。课程提供的 `helpers.py`、预处理、检查器和模型参数作为既有资料使用。报告源文件和 PDF 在 `report/`，使用 XeLaTeX 或 Tectonic 编译。当前 PDF 共 7 页：封面 1 页、正文恰好 5 页、教师批阅页 1 页。
+实验报告 PDF 共 7 页：封面 1 页、正文恰好 5 页、教师批阅页 1 页。报告源文件可使用 XeLaTeX 或 Tectonic 编译。

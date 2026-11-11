@@ -80,11 +80,11 @@
 \end{center}
 最终输出容差为 $\mathrm{atol}=2\times10^{-5},\mathrm{rtol}=2\times10^{-4}$；内部 token 容差为 $\mathrm{atol}=2\times10^{-4},\mathrm{rtol}=2\times10^{-4}$。检查器还要求形状正确、数值有限且类型为 float32。运行 \texttt{python3 run.py --output output\_tokens.npz} 得到十个 ID 和 $(10,512)$ 特征；每行的欧氏长度介于 $0.9999999$ 与 $1.0$ 之间。
 
-批次测试将样例 1、0、1 依次输入，既改变顺序又重复第一张所选图像。输出与参考中相同顺序的三行比较仍通过，说明程序没有把固定的参考特征缓存为结果。测试中使用的权重来自课程附件，按 README 指引放入 \texttt{weights/}；生成的 NPZ 特征文件不纳入 Git 仓库。
+批次测试将样例 1、0、1 依次输入，既改变顺序又重复第一张所选图像。输出与参考中相同顺序的三行比较仍通过，说明程序没有把固定的参考特征缓存为结果。权重由仓库通过 Git LFS 提供；参考数组只用于比较，生成的 NPZ 特征文件保存在运行目录。
 
 \noindent 项目 GitHub 地址：{\small\url{https://github.com/xiaogex57/project1-numpy-image-encoder}}。
 
-\textbf{复现步骤。} 在项目根目录运行 \texttt{python3 -m pip install -r requirements.txt} 安装依赖，再从畅课原始项目附件取回大型权重和参考文件，依 README 中路径放置。先用 \texttt{python3 check.py --stage assets} 验证资源，再运行 \texttt{python3 check.py --stage all}；最后用 \texttt{python3 run.py --output output\_tokens.npz} 导出结果。参数和样例资源有 SHA-256 清单，完整检查日志随仓库保存。
+\textbf{复现步骤。} 安装 Git LFS 后克隆仓库并运行 \texttt{git lfs pull} 获取权重和参考文件；在项目根目录运行 \texttt{python3 -m pip install -r requirements.txt} 安装依赖。先用 \texttt{python3 check.py --stage assets} 验证资源，再运行 \texttt{python3 check.py --stage all}；最后用 \texttt{python3 run.py --output output\_tokens.npz} 导出结果。参数和样例资源有 SHA-256 清单，完整检查日志随仓库保存。
 
 \textbf{证据范围。} 资源检查核对 152 个张量的名称、形状、数据类型和哈希，并验证十张样例图及参考输出顺序。patch、输入 token 和首个 Transformer 块以两张图像逐项对照；完整 12 层输出和最终特征在十张图像上比较。批次用索引 $[1,0,1]$ 重新排列并重复样例，检查编码器没有依赖固定输入次序。
 
