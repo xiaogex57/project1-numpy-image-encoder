@@ -43,10 +43,13 @@
 
 \textbf{注意力和 Transformer。} 每个 768 维 token 分成 12 个 64 维头。查询与键相乘并除以 $\sqrt{64}$，经 softmax 加权值向量；合并 12 个头并投影。每块包含注意力残差与 MLP 残差，MLP 使用给定的精确 GELU。最终选择 CLS，乘形状为 $[768,512]$ 的投影矩阵，并缩放成单位向量。
 
+多头计算中，$Q,K,V$ 的形状均为 $[B,12,N,64]$，分数矩阵为 $[B,12,N,N]$；softmax 沿最后一个键轴计算。注意力输出先恢复成 $[B,N,768]$，再做线性投影。块内两条残差分别为 $r=x+\mathrm{Attention}(\mathrm{Norm}_1(x))$ 和 $y=r+\mathrm{MLP}(\mathrm{Norm}_2(r))$。这两处相加都保持 token 序列形状 $[B,N,768]$，使 12 个块能够顺序连接。
+
 \textbf{贡献与辅助。} 六组练习的 NumPy 实现、项目说明和本报告草稿由 Codex 辅助生成。提交者需逐段检查代码与报告，并补充本人实际完成的修改、调试和验证记录。提供的预处理、辅助函数、权重、样例图像和参考检查器不计作本人原创实现。
 
 \section{Results：结果与证据}
-运行环境为 Python 3.14.3、NumPy 2.4.4、Pillow 12.2.0。运行 \texttt{python3 check.py --stage all}，全部阶段通过。各阶段与独立 FP32 参考的绝对误差如下：
+运行环境为 Python 3.14.3、NumPy 2.4.4、Pillow 12.2.0。执行
+\texttt{python3 check.py} 加参数 \texttt{--stage all} 后全部阶段通过；完整终端记录保存在项目的 \path{report/check-results.txt}。各阶段与独立 FP32 参考的绝对误差如下：
 
 \begin{center}
 \small
@@ -64,12 +67,18 @@
 \bottomrule
 \end{tabular}
 \end{center}
-最终输出容差为 $\mathrm{atol}=2\times10^{-5},\mathrm{rtol}=2\times10^{-4}$；内部 token 容差为 $\mathrm{atol}=2\times10^{-4},\mathrm{rtol}=2\times10^{-4}$。所有结果均为有限的 float32 数值。项目 GitHub 地址：\url{https://github.com/xiaogex57/project1-numpy-image-encoder}。
+最终输出容差为 $\mathrm{atol}=2\times10^{-5},\mathrm{rtol}=2\times10^{-4}$；内部 token 容差为 $\mathrm{atol}=2\times10^{-4},\mathrm{rtol}=2\times10^{-4}$。检查器还要求形状正确、数值有限且类型为 float32。运行 \texttt{python3 run.py --output output\_tokens.npz} 得到十个 ID 和 $(10,512)$ 特征；每行的欧氏长度介于 $0.9999999$ 与 $1.0$ 之间。
+
+批次测试将样例 1、0、1 依次输入，既改变顺序又重复第一张所选图像。输出与参考中相同顺序的三行比较仍通过，说明程序没有把固定的参考特征缓存为结果。测试中使用的权重来自课程附件，按 README 指引放入 \texttt{weights/}；生成的 NPZ 特征文件不纳入 Git 仓库。
+
+\noindent 项目 GitHub 地址：{\small\url{https://github.com/xiaogex57/project1-numpy-image-encoder}}。
 
 \section{Discussion：分析与反思}
 图像块和输入 token 的误差为零，说明轴重排、patch 投影和位置顺序与参考一致。经过 12 个块后内部 token 最大误差为 $4.387\times10^{-5}$，仍在容差内；最终输出最大误差为 $6.780\times10^{-7}$。改变批次顺序并重复图像仍通过，支持按输入行独立处理的结论。
 
 原始项目首次运行检查时，\texttt{patches} 阶段因 TODO-01 抛出 \texttt{NotImplementedError}；补全图像块排列后该阶段误差降为零。实现中还需注意两种权重方向：大多数线性层权重是 $[\mathrm{out},\mathrm{in}]$，计算时转置；最终 \texttt{visual.proj} 已是 $[768,512]$，不转置。多头键矩阵也只交换最后两个轴。实验仅验证固定权重的前向数值一致性，不评价分类准确率或训练效果。
+
+数值误差主要出现在注意力矩阵乘法和 MLP 的连续浮点运算后；仅凭误差大小不能判定哪一个算子贡献最大，因此本实验采用逐阶段对照定位偏差。进一步改进可加入不同批大小、非课程样例图像和边界输入，检验接口的通用性；若需要评价实际图像语义能力，还需另设下游任务与指标。
 
 \newpage
 \noindent\textbf{指导教师批阅意见：}

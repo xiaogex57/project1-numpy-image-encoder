@@ -9,5 +9,4 @@ assets/reference_outputs.npz
 report/*.aux
 report/*.log
 report/*.out
-report/*.pdf
 report/*.synctex.gz
