@@ -1,6 +1,6 @@
 # NumPy 图像特征提取
 
-GitHub 仓库：https://github.com/xiaogex57/project1-numpy-image-encoder （私有；需向教师和助教授予访问权限）。
+GitHub 仓库：https://github.com/xiaogex57/project1-numpy-image-encoder （公开可访问）。
 
 本项目用 NumPy 完成 OpenCLIP ViT-B/32 图像塔的前向计算。固定参数由课程提供；程序不训练模型。输入是预处理后的 float32 数组 `[B,3,224,224]`，输出是每张图像一行、单位长度的 float32 特征 `[B,512]`。
 
