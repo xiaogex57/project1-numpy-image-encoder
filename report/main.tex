@@ -14,15 +14,15 @@
 \vspace{0.5cm}
 {\Large 学院：人工智能学院\par}
 \vspace{0.5cm}
-{\Large 专业：\underline{\hspace{5cm}}\par}
+{\Large 专业：人工智能（IEEE 荣誉班）\par}
 \vspace{0.5cm}
 {\Large 指导教师：舒婷\par}
 \vspace{0.5cm}
-{\Large 报告人：\underline{\hspace{3cm}}\quad 学号：\underline{\hspace{3cm}}\par}
+{\Large 报告人：徐潇阁\quad 学号：2025681120\par}
 \vspace{0.5cm}
-{\Large 实验时间：2026年11月\par}
+{\Large 实验时间：2026年11月10日至11日\par}
 \vspace{0.5cm}
-{\Large 提交时间：\underline{\hspace{5cm}}\par}
+{\Large 提交时间：2026年11月11日\par}
 \vfill {\Large 教务处制\par}
 \end{titlepage}
 
@@ -45,7 +45,7 @@
 
 多头计算中，$Q,K,V$ 的形状均为 $[B,12,N,64]$，分数矩阵为 $[B,12,N,N]$；softmax 沿最后一个键轴计算。注意力输出先恢复成 $[B,N,768]$，再做线性投影。块内两条残差分别为 $r=x+\mathrm{Attention}(\mathrm{Norm}_1(x))$ 和 $y=r+\mathrm{MLP}(\mathrm{Norm}_2(r))$。这两处相加都保持 token 序列形状 $[B,N,768]$，使 12 个块能够顺序连接。
 
-\textbf{贡献与辅助。} 六组练习的 NumPy 实现、项目说明和本报告草稿由 Codex 辅助生成。提交者需逐段检查代码与报告，并补充本人实际完成的修改、调试和验证记录。提供的预处理、辅助函数、权重、样例图像和参考检查器不计作本人原创实现。
+\textbf{本人贡献与辅助。} 本人在 Codex 辅助下补全六组 NumPy 练习，整理 README、运行数值检查并撰写报告。代码和报告内容由 Codex 生成；课程提供的预处理、辅助函数、权重、样例图像及参考检查器不计作原创贡献。
 
 \section{Results：结果与证据}
 运行环境为 Python 3.14.3、NumPy 2.4.4、Pillow 12.2.0。执行

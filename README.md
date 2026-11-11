@@ -37,4 +37,4 @@ python3 run.py --images path/to/a.jpg path/to/b.png --output my_tokens.npz
 
 ## 实现与说明
 
-`image_encoder.py` 中的六组 TODO 由 Codex 辅助完成。课程提供的 `helpers.py`、预处理、检查器和模型参数未作为原创实现。提交者应独立核对代码、补充本人实际贡献，并在提交前确保能解释图像块排列、多头维度、残差和投影方向。报告源文件和 PDF 在 `report/`；使用 XeLaTeX 或 Tectonic 编译。PDF 正文为两页，另有封面与教师批阅页。封面个人信息尚需填写。
+`image_encoder.py` 中的六组 TODO、项目说明和报告由 Codex 辅助完成；课程提供的 `helpers.py`、预处理、检查器和模型参数未作为原创实现。报告源文件和 PDF 在 `report/`，使用 XeLaTeX 或 Tectonic 编译。提交前应确保能解释图像块排列、多头维度、残差和投影方向。
