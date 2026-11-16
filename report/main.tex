@@ -59,6 +59,8 @@
 \bottomrule
 \end{tabular}
 \end{center}
+\vspace{-0.15cm}
+{\footnotesize\noindent\textbf{注：}$B$ 为批量大小；50 个 token 由 49 个 patch 与 1 个 CLS 构成。\par}
 
 归一化按 RGB 通道顺序执行：
 \[
@@ -160,6 +162,8 @@ CLS 投影 & $\mathrm{Norm}(x_{\rm CLS})W_v$ & $[B,512]$ \\
 \bottomrule
 \end{tabular}
 \end{center}
+\vspace{-0.15cm}
+{\footnotesize\noindent\textbf{注：}$B$ 为批量大小，$N=50$ 包含 49 个 patch token 与 1 个 CLS token。\par}
 
 \newpage
 \section{Results：结果与证据}
@@ -181,6 +185,8 @@ CLS 投影 & $\mathrm{Norm}(x_{\rm CLS})W_v$ & $[B,512]$ \\
 \bottomrule
 \end{tabular}
 \end{center}
+\vspace{-0.15cm}
+{\footnotesize\noindent\textbf{注：}误差按实现阶段输出与独立 FP32 参考数组逐元素比较后统计。\par}
 
 \begin{figure}[H]
 \centering
@@ -240,6 +246,8 @@ Transformer 数值 & 最后 token 最大误差 $4.387\times10^{-5}$ & 连续浮�
 \bottomrule
 \end{tabular}
 \end{center}
+\vspace{-0.15cm}
+{\footnotesize\noindent\textbf{注：}表内误差为实现输出与独立参考数组之间的最大绝对差；检查器同时使用 $\texttt{atol}$ 与 $\texttt{rtol}=2\times10^{-4}$ 进行数值判定。\par}
 
 \textbf{调试过程。} 首次阶段检查在 patch 构造处提示 TODO-01 未实现。按如下轴序重排并展平后，patch 与嵌入阶段误差为零；偏差随后出现在 Transformer 浮点计算阶段。阶段检查将问题定位到最近完成的计算单元：
 \[
