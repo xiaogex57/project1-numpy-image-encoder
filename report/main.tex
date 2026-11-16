@@ -208,7 +208,7 @@ CLS 投影 & $\mathrm{Norm}(x_{\rm CLS})W_v$ & $[B,512]$ \\
 
 运行 \texttt{python3 run.py --output output\_tokens.npz} 得到十个 ID 和 $(10,512)$ 特征，每行范数为 $0.9999999$ 至 $1.0$。分阶段检查记录见 \path{report/check-results.txt}。
 
-为直观看各阶段与绝对容差的尺度关系，下表列出最大绝对误差占对应 $\texttt{atol}$ 的比例。末 token 阶段约为容差的 21.9\%，最终特征为 3.39\%，变序批次为 2.31\%。检查实际采用 $\texttt{atol}+\texttt{rtol}\cdot|\mathrm{reference}|$ 的逐元素条件，因此该比例用于概览误差量级，是否通过仍由完整比较条件决定。
+下表列出各阶段最大绝对误差占对应绝对容差的比例。
 
 \begin{center}
 \small
@@ -222,6 +222,8 @@ CLS 投影 & $\mathrm{Norm}(x_{\rm CLS})W_v$ & $[B,512]$ \\
 \bottomrule
 \end{tabular}
 \end{center}
+\vspace{-0.15cm}
+{\footnotesize\noindent\textbf{注：}误差/$\texttt{atol}$ 为最大绝对误差除以绝对容差。检查还使用 $\texttt{rtol}=2\times10^{-4}$，逐元素按 $|\mathrm{actual}-\mathrm{reference}|\leq\texttt{atol}+\texttt{rtol}|\mathrm{reference}|$ 判定；比例用于说明误差量级。\par}
 
 \newpage
 \section{Discussion：分析与反思}
