@@ -9,6 +9,7 @@ GitHub 仓库：https://github.com/xiaogex57/project1-numpy-image-encoder
 | 路径 | 用途 |
 | --- | --- |
 | `image_encoder.py` | 六组练习实现：图像块、嵌入、多头注意力、Transformer 和最终投影 |
+| `transformer_steps.py` | 小型 Transformer 前向过程分步示例 |
 | `preprocess_image.py`, `helpers.py` | 图像预处理和数值辅助函数 |
 | `runtime.py`, `run.py` | 加载模型参数、处理图像并保存特征 |
 | `check.py` | 检查模型资源并逐阶段比较参考结果 |
