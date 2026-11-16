@@ -18,6 +18,7 @@ GitHub 仓库：https://github.com/xiaogex57/project1-numpy-image-encoder
 | `assets/reference_outputs.npz` | 数值检查参考结果，Git LFS 管理 |
 | `assets/images/`, `assets/images.json` | 十张示例图像、来源和 SHA-256 清单 |
 | `report/main.tex`, `report/main.pdf` | 实验报告源文件和 PDF |
+| `report/figs/` | 流程图和分阶段误差图 |
 | `report/check-results.txt` | 分阶段数值检查记录 |
 | `lecture-demos/` | NumPy、图像读写和 token 流程示例 |
 | `practice/project1_exercises.pdf` | 课程练习说明 |
@@ -51,4 +52,4 @@ python3 run.py --images path/to/a.jpg path/to/b.png --output my_tokens.npz
 
 检查包含预处理、图像块、输入 token、首个 Transformer 块、最后 token、最终输出，以及改变顺序和重复图像的批次。2026-11-11 在 Python 3.14.3、NumPy 2.4.4、Pillow 12.2.0 上运行 `python3 check.py --stage all`，全部 PASS；最终输出形状 `(10,512)`，最大绝对误差 `6.780e-07`，平均绝对误差 `8.215e-08`。最终输出比较容差为 `atol=2e-5, rtol=2e-4`。分阶段数据见 `report/check-results.txt` 和实验报告。
 
-实验报告 PDF 共 7 页：封面 1 页、正文恰好 5 页、教师批阅页 1 页。报告源文件可使用 XeLaTeX 或 Tectonic 编译。
+实验报告 PDF 共 6 页：封面 1 页、正文恰好 4 页、教师批阅页 1 页。报告源文件可使用 XeLaTeX 或 Tectonic 编译。
